@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <UserSecretsId>placetopay-checkout-web-example</UserSecretsId>
+    <!-- The example app is a demo — we opt out of stylistic analyzer rules. -->
+    <NoWarn>$(NoWarn);CA1050;CA1305;CA1848;CA1869;IDE0011;IDE0028;IDE0058;IDE0063;IDE0066</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PlaceToPay.Checkout\PlaceToPay.Checkout.csproj" />
+  </ItemGroup>
+
+</Project>

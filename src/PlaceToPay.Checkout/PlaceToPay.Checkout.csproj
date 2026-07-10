@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RootNamespace>PlaceToPay.Checkout</RootNamespace>
+    <AssemblyName>PlaceToPay.Checkout</AssemblyName>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CA1848/CA1305/CA1512 are stylistic code-analysis rules that we explicitly opt out
+         of for v1 — they'd require LoggerMessage source generators and locale-specific
+         formatting overloads throughout the code base.
+         CS1591 (missing XML docs on public members) is INTENTIONALLY left enabled so that
+         every public type/member surfaces in IntelliSense for client developers. -->
+    <NoWarn>$(NoWarn);CA1848;CA1305;CA1512</NoWarn>
+
+    <IsPackable>true</IsPackable>
+    <PackageId>PlaceToPay.Checkout</PackageId>
+    <Title>PlaceToPay Checkout SDK</Title>
+    <Description>Official .NET SDK for the PlaceToPay Web Checkout API. Async, nullable-safe, built on HttpClient and System.Text.Json.</Description>
+    <PackageTags>placetopay;payments;checkout;sdk;colombia;ecuador</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/placetopay/checkout-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/placetopay/checkout-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- Deterministic builds -->
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Options" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Emit [InternalsVisibleTo] at compile time so the test project can
+         reach `internal` types like JsonDefaults, IClock and RetryHandler. -->
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>PlaceToPay.Checkout.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

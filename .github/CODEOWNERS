@@ -1,0 +1,22 @@
+# Code owners — PlaceToPay .NET SDK
+#
+# Syntax: <pattern> <owner> [<owner> ...]
+# Docs:   https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# Replace the @placetopay/* team handles below with the actual GitHub team
+# handles for your organization before committing.
+
+# ── Default owner for anything not matched below ──
+*                                   @placetopay/sdk-team
+
+# ── Security-sensitive: require an extra pair of eyes ──
+/src/PlaceToPay.Checkout/Auth/      @placetopay/sdk-team @placetopay/security
+/src/PlaceToPay.Checkout/Webhook/   @placetopay/sdk-team @placetopay/security
+/src/PlaceToPay.Checkout/Http/      @placetopay/sdk-team @placetopay/security
+SECURITY.md                         @placetopay/security
+
+# ── Release-critical: version bumps + CI pipeline ──
+/.github/workflows/                 @placetopay/sdk-team @placetopay/devops
+Directory.Packages.props            @placetopay/sdk-team
+Directory.Build.props               @placetopay/sdk-team
+CHANGELOG.md                        @placetopay/sdk-team

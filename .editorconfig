@@ -1,0 +1,62 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{json,yml,yaml,md}]
+indent_size = 2
+
+[*.{csproj,props,targets}]
+indent_size = 2
+
+[*.cs]
+# Namespace style
+csharp_style_namespace_declarations = file_scoped:error
+
+# Braces
+csharp_prefer_braces = true:error
+csharp_new_line_before_open_brace = all
+
+# var usage
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_style_var_elsewhere = false:suggestion
+
+# Expression-bodied members
+csharp_style_expression_bodied_methods = when_on_single_line:suggestion
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+
+# Pattern matching / modern C#
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_prefer_switch_expression = true:suggestion
+csharp_style_prefer_primary_constructors = true:suggestion
+
+# using directives
+csharp_using_directive_placement = outside_namespace:error
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+# Code quality
+dotnet_diagnostic.CA1707.severity = none       # Underscores in identifiers (enum members)
+dotnet_diagnostic.CA1308.severity = none       # ToLowerInvariant vs ToUpperInvariant
+dotnet_diagnostic.CA1034.severity = none       # Nested types
+
+[test/**/*.cs]
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA2007.severity = none       # ConfigureAwait not required in tests
+dotnet_diagnostic.CA1515.severity = none
+
+# Models/ are DTO records that mirror the JSON schema in
+# openapi/checkout.yaml — that file is the authoritative source for field
+# semantics. Adding per-property XML docs here would just restate the
+# JSON property name without adding information, so CS1591 is suppressed
+# for this directory only. The class itself still needs a <summary>.
+[src/PlaceToPay.Checkout/Models/**/*.cs]
+dotnet_diagnostic.CS1591.severity = none

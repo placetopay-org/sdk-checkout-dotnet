@@ -1,0 +1,66 @@
+name: Release
+
+# Requires repository secret: NUGET_API_KEY (generate at https://www.nuget.org/account/apikeys).
+#
+# Tag a release commit with a SemVer tag (e.g. `v1.0.0`) and push it to trigger this workflow.
+#
+#   git tag v1.0.0
+#   git push origin v1.0.0
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  pack-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            10.0.x
+
+      - name: Extract version from tag
+        id: version
+        run: echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Restore
+        run: dotnet restore src/PlaceToPay.Checkout/PlaceToPay.Checkout.csproj
+
+      - name: Build
+        run: >-
+          dotnet build src/PlaceToPay.Checkout/PlaceToPay.Checkout.csproj
+          --configuration Release
+          --no-restore
+          -p:Version=${{ steps.version.outputs.value }}
+
+      - name: Pack
+        run: >-
+          dotnet pack src/PlaceToPay.Checkout/PlaceToPay.Checkout.csproj
+          --configuration Release
+          --no-build
+          -p:Version=${{ steps.version.outputs.value }}
+          --output artifacts
+
+      - name: Push to NuGet.org
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: >-
+          dotnet nuget push "artifacts/*.nupkg"
+          --api-key "$NUGET_API_KEY"
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
